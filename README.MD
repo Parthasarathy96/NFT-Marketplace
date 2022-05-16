@@ -7,7 +7,7 @@
     - Keeps track of all the tokens owned by an account.
 
 ### Stack
-    -Solidity
+    - Solidity
     - Ether.js
     - Ganache
     - Openzeppelin(ERC721)
