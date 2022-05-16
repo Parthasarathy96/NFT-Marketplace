@@ -18,4 +18,5 @@
 - Run scripts/deploy.js to deploy the contract.
 
 
-    
+# Resource to mint NFT
+https://gateway.pinata.cloud/ipfs/QmaUK792RLARk4y3yZww1tnvu5GGAXdVqKYVr76dwrHVfp
