@@ -39,21 +39,10 @@ function updateListingPrice(uint _listingPrice) public {
       listingFee = _listingPrice;
     }
 
-
-function createNFT(string memory tokenURI, uint256 price) public payable returns (uint) {
-      
-      uint newTokenId = _NFTCount.current();
-      _mint(msg.sender, newTokenId);
-      _setTokenURI(newTokenId, tokenURI);
-      AddNFTToMarket(address(this),newTokenId, price);
-      return newTokenId;
-      _NFTCount.increment();
-    }
-
 function AddNFTToMarket(address Contract, uint tokenID, uint price) public payable {
     require(price > 0, "Price should be more than 0 wei");
     require(msg.value == listingFee, "Send the exact listing fee");
-    //require(IERC721(Contract).getApproved(tokenID) == address(this), "NFT must be approved to market");
+    require(IERC721(Contract).getApproved(tokenID) == address(this), "NFT must be approved to market");
     IERC721(Contract).transferFrom(msg.sender,address(this),tokenID);
 
     _NFTCount.increment();
