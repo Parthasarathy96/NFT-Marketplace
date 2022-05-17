@@ -4,7 +4,10 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract MyNFTMarket is Ownable, ERC721URIStorage {
+/// @title NFT Marketplace
+/// @author Parthasarathy
+/// @notice You can use this contract for buying and selling NFTs
+contract MyNFTMarket is Ownable{
 
 using Counters for Counters.Counter;
 Counters.Counter private _NFTCount;
@@ -22,6 +25,9 @@ struct MarketNFT {
       uint256 price;
       bool sold;
     }
+
+/// @notice  emited when a NFT is added to Marketplace
+/// @dev Emitted at AddNFTToMarket function
 event MarketItemCreated (
      uint256 id,
       address NFTcontract,
@@ -31,18 +37,20 @@ event MarketItemCreated (
       bool sold
     );
 
-constructor() ERC721("NFTMarketplace", "NFTM"){
-}
+constructor(){}
 
+/// @notice Updates the listing price of the marketplace
 function updateListingPrice(uint _listingPrice) public {
       require(owner() == msg.sender, "Only marketplace owner can update listing price.");
       listingFee = _listingPrice;
     }
 
+/// @notice Adds user's NFT to the marketplace
+/// Seller -> NFT Marketplace
 function AddNFTToMarket(address Contract, uint tokenID, uint price) public payable {
     require(price > 0, "Price should be more than 0 wei");
     require(msg.value == listingFee, "Send the exact listing fee");
-    require(IERC721(Contract).getApproved(tokenID) == address(this), "NFT must be approved to market");
+    //require(IERC721(Contract).getApproved(tokenID) == address(this), "NFT must be approved to market");
     IERC721(Contract).transferFrom(msg.sender,address(this),tokenID);
 
     _NFTCount.increment();
@@ -68,9 +76,10 @@ function AddNFTToMarket(address Contract, uint tokenID, uint price) public payab
 
 }
 
-//Function used to sell listed NFT
+/// @dev Transfers(Sell) the NFT to the buyer and recieves the fixed price.
+///  NFT Marketplace -> Buyer
 function BuyNFT(uint ID) public payable{
-    require(MarketItemID[ID].sold == true, "The NFT is already sold");
+    require(MarketItemID[ID].sold == false, "The NFT is already sold");
     uint price = MarketItemID[ID].price;
     address seller = MarketItemID[ID].seller;
     address Contract = MarketItemID[ID].NFTcontract;
@@ -84,17 +93,20 @@ function BuyNFT(uint ID) public payable{
     _NFTCount.decrement();
 }
 
-//Function to withdraw ETH
+/// @notice Function to withdraw ETH for User
+/// @dev The user can withdraw the ETH from selling thier NFTs
 function UserWithdrawETH() public payable{
     require(balances[msg.sender] > 0, "Balance should be more than 0");
     (bool success,) = msg.sender.call{value: balances[msg.sender]}("");
 }
 
-//CONTRACT BALANCE
+/// @notice Function to view the balance of the contract
 function contractBalance() public view returns(uint){
     return address(this).balance;
 }
 
+/// @notice Function to view the NFTs owned by the user
+/// @dev Returns array of stucts
 function MyNFTs() public view returns(MarketNFT[] memory){
     uint totalItemCount = _NFTCount.current();
     uint itemCount = 0;
@@ -115,7 +127,7 @@ function MyNFTs() public view returns(MarketNFT[] memory){
       }
       return items;
 }
-
+/// @notice Function to resell the NFTs bought in this marketplace
 function resellNFT(uint TokenID, uint price) public payable{
     require(MarketItemID[TokenID].seller == msg.sender, "Only owner of NFT can access this function");
     require(msg.value == listingFee, "Send the exact listing fee");
