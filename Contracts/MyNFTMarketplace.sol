@@ -79,7 +79,7 @@ function AddNFTToMarket(address Contract, uint tokenID, uint price) public payab
 /// @dev Transfers(Sell) the NFT to the buyer and recieves the fixed price.
 ///  NFT Marketplace -> Buyer
 function BuyNFT(uint ID) public payable{
-    require(MarketItemID[ID].sold == false, "The NFT is already sold");
+    require(MarketItemID[ID].sold == true, "The NFT is already sold");
     uint price = MarketItemID[ID].price;
     address seller = MarketItemID[ID].seller;
     address Contract = MarketItemID[ID].NFTcontract;

@@ -20,3 +20,5 @@
 
 # Resource to mint NFT
 https://gateway.pinata.cloud/ipfs/QmaUK792RLARk4y3yZww1tnvu5GGAXdVqKYVr76dwrHVfp
+
+# Deployed Address(Ropsten)
