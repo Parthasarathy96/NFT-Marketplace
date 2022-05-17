@@ -22,3 +22,5 @@
 https://gateway.pinata.cloud/ipfs/QmaUK792RLARk4y3yZww1tnvu5GGAXdVqKYVr76dwrHVfp
 
 # Deployed Address(Ropsten)
+- NFT Marketplace - 0xFf464818E3966f30133CEB8d8CD4756d123278DC
+- NFT Contract - 0x45955284C9aA5e23305E60Ee282077E9CF56ad88
