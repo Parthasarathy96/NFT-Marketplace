@@ -4,3 +4,4 @@ node_modules
 Test
 package-lock
 .env
+vars
